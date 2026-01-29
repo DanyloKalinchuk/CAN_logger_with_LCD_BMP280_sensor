@@ -50,7 +50,7 @@ std::string Can::log_message(bool recieved, struct can_frame *frame){
 	std::string hex_str;
 
 	hex_num << std::hex << std::setfill('0') << std::setw(2)
-		<< ((frame->can_id & (SENDER_MASK)) >> 4);
+		<< (frame->can_id & (SENDER_MASK));
 	hex_str = hex_num.str();
 	hex_num.str(std::string());
 
@@ -152,4 +152,5 @@ can::frame_data Can::read(unsigned int mask){
 
 	return fr_data;
 }
+
 

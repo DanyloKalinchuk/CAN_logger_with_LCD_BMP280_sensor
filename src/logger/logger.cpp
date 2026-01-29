@@ -6,6 +6,8 @@ Logger::Logger(std::string file_path) :
 	if (!this->file){
 		throw std::runtime_error("Failed to open logging file");
 	}
+
+	this->file << std::unitbuf;
 }
 
 Logger::~Logger(){
@@ -15,5 +17,4 @@ Logger::~Logger(){
 void Logger::log_out(std::string message){
 	this->file << message;
 }
-
 

@@ -28,4 +28,4 @@ Tools that were written for the project:
 5. **Timer**  
    The timer class is a universal tool for implementing multithread scheduled routine. It operates on external pointer to routine handling functions to require no dependencies with other specialized tools.  
 
-Those tools are designed to be independent from each others, thus they can be used in other applications.
+Those tools are designed to be independent from each others, thus they can be used in other applications freely.

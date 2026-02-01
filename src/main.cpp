@@ -24,14 +24,15 @@ int main(){
 		can::frame_data frame_dt = can_ctrl.read();
 
 		if ((frame_dt.id & 0xFUL) == BMP_SRC){
-			double temp = (frame_dt.data & 0xFFFF0000UL) >> 32;
+
+			double temp = ((frame_dt.data >> 32) & 0xFFFFFFFFUL);
 			temp = temp / 100;
 
-			double press = frame_dt.data & 0xFFFFUL;
+			double press = frame_dt.data & 0xFFFFFFFFUL;
 			press = press / 256;
 
 			std::cout << "Temp: " << temp <<
-				"Press: " << press << "\n";
+				"; Press: " << press << "\n";
 		}else if (frame_dt.id == STOP_ID){
 			break;
 		}
@@ -42,13 +43,20 @@ int main(){
 
 void screen_update(){
 	std::pair<double, double> res = sensor.read_temp_press();
+	int temp = res.first * 100;
+	res.first = temp / 100;
+
+	temp = res.second * 100;
+	res.second = temp / 100;
+
 	lcd.write_temp_press(res.first, res.second);
 }
 
 void can_sensor(){
 	std::pair<int, int> res = sensor.read_raw();
-	unsigned long data = ((unsigned long)res.first << 32) | res.second;
+	std::uint64_t data = ((std::uint64_t)res.first << 32) | res.second;
 
 	can_ctrl.send((PI_SNDR | BMP_SRC), 8, data);
 }
+
 

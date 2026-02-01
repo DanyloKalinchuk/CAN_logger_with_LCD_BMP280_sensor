@@ -11,6 +11,7 @@ extern "C"{
 #include <unistd.h>
 }
 
+#include <cstdint>
 #include <memory>
 #include <iostream>
 #include <sstream>
@@ -25,7 +26,7 @@ extern "C"{
 namespace can{
 	struct frame_data{
 		unsigned int id;
-		unsigned long data;
+		std::uint64_t  data = 0;
 		unsigned short len;
 	};
 
@@ -46,10 +47,11 @@ class Can{
 	Can(Logger* logger);
 	~Can() = default;
 
-	void send(unsigned int id, unsigned short len, unsigned long data);
+	void send(unsigned int id, unsigned short len, std::uint64_t data);
 	can::frame_data read();
 	can::frame_data read(unsigned int mask);
 };
 
 #endif
+
 

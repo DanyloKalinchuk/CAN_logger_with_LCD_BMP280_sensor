@@ -64,8 +64,6 @@ void LCD_4BIT::write_byte(unsigned int val, bool is_str){
 LCD_4BIT::LCD_4BIT(unsigned int rs, unsigned int e,  unsigned int d4,
 			unsigned int d5, unsigned int d6, unsigned int d7){
 
-	std::cout << "Initialising the lcd\n";
-
 	this->rs = rs;
 	this->e = e;
 	this->lines[0] = d4;
@@ -73,14 +71,10 @@ LCD_4BIT::LCD_4BIT(unsigned int rs, unsigned int e,  unsigned int d4,
 	this->lines[2] = d6;
 	this->lines[3] = d7;
 
-	std::cout << "Openning the chip...\n";
-
 	this->chip = gpiod_chip_open("/dev/gpiochip0");
 	if (!this->chip){
 		throw std::runtime_error("Failed to open the chip");
 	}
-
-	std::cout << "Creating line_setting...\n";
 
 	struct gpiod_line_settings *settings = gpiod_line_settings_new();
 	if (!settings){
@@ -90,8 +84,6 @@ LCD_4BIT::LCD_4BIT(unsigned int rs, unsigned int e,  unsigned int d4,
 
 	gpiod_line_settings_set_direction(settings, GPIOD_LINE_DIRECTION_OUTPUT);
 	gpiod_line_settings_set_output_value(settings, GPIOD_LINE_VALUE_INACTIVE);
-
-	std::cout << "Creating line_config...\n";
 
 	struct gpiod_line_config *config = gpiod_line_config_new();
 	if (!config){
@@ -108,8 +100,6 @@ LCD_4BIT::LCD_4BIT(unsigned int rs, unsigned int e,  unsigned int d4,
 		throw std::runtime_error("Failed to add line settings");
 	}
 
-	std::cout << "Creating request_config...\n";
-
 	struct gpiod_request_config *request_conf = gpiod_request_config_new();
 	if (!request_conf){
 		gpiod_line_config_free(config);
@@ -120,8 +110,6 @@ LCD_4BIT::LCD_4BIT(unsigned int rs, unsigned int e,  unsigned int d4,
 
 	gpiod_request_config_set_consumer(request_conf, "hd44780_lcd");
 
-	std::cout << "Getting request value...\n";
-
 	this->request = gpiod_chip_request_lines(this->chip, request_conf, config);
 	gpiod_request_config_free(request_conf);
 	gpiod_line_config_free(config);
@@ -131,8 +119,6 @@ LCD_4BIT::LCD_4BIT(unsigned int rs, unsigned int e,  unsigned int d4,
 		throw std::runtime_error("Failed to request the lines");
 	}
 
-
-	std::cout << "Preparing the display...\n";
 
 	delay_ms(15);
 
@@ -162,8 +148,6 @@ LCD_4BIT::LCD_4BIT(unsigned int rs, unsigned int e,  unsigned int d4,
 
 	this->write_byte(0x0DUL, 0);
 	delay_us(160);
-
-	std::cout << "Initialized successfully\n";
 }
 
 LCD_4BIT::~LCD_4BIT(){
@@ -199,4 +183,5 @@ void LCD_4BIT::set_cursor(unsigned short line, unsigned short position){
 
 	this->write_byte((0x80UL | ((line * 0x40UL) | position)), 0);
 }
+
 

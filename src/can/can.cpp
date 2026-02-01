@@ -78,12 +78,12 @@ std::string Can::log_message(bool recieved, struct can_frame *frame){
 	return message;
 }
 
-void Can::send(unsigned int id, unsigned short len, unsigned long data){
+void Can::send(unsigned int id, unsigned short len, std::uint64_t data){
 	struct can_frame frame;
 	frame.can_id = id;
 	frame.len = len;
 	for (int i = 0; i < len; i++){
-		frame.data[i] = (data >> i) & 0xFFUL;
+		frame.data[i] = (data >> (i * 8)) & 0xFFUL;
 	}
 
 	std::lock_guard<std::mutex> lock(this->send_mtx);
@@ -111,7 +111,7 @@ can::frame_data Can::read(){
 	fr_data.id = frame.can_id;
 	fr_data.len = frame.len;
 	for (int i = 0; i < frame.len; i++){
-		fr_data.data ^= (frame.data[i] << i);
+		fr_data.data |= ((std::uint64_t)frame.data[i] << (i * 8));
 	}
 
 	if (this->logs_on){
@@ -136,7 +136,7 @@ can::frame_data Can::read(unsigned int mask){
 		fr_data.id = frame.can_id;
 		fr_data.len = frame.len;
 		for (int i = 0; i < frame.len; i++){
-			fr_data.data ^= (frame.data[i] << i);
+			fr_data.data |= ((std::int64_t)frame.data[i] << (i * 8));
 		}
 
 		if (this->logs_on){

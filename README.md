@@ -1,4 +1,4 @@
-# CAN logger with LCD BMP280 sensor
+# CAN logger with LCD and BMP280 sensor
 
 ## Libraries used
 1. libi2c

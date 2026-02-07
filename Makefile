@@ -1,32 +1,26 @@
-final: cpp_can_logger
+TARGET = cpp_can_logger
 
-can.o : src/can/can.cpp
-	g++ -O2 -c src/can/can.cpp -o can.o
+CC = gcc
+CPP = g++
+FLAGS = -O2 -c
+LIBS = -li2c -lgpiod
 
-logger.o : src/logger/logger.cpp
-	g++ -O2 -c src/logger/logger.cpp -o logger.o
+SRC_C = $(shell find . -name '*.c')
+SRC_CPP = $(shell find . -name '*.cpp')
 
-timer.o : src/timer/timer.cpp
-	g++ -O2 -c src/timer/timer.cpp
+OBJ_C = $(SRC_C:.c=.o)
+OBJ_CPP = $(SRC_CPP:.cpp=.o)
 
-hd44780.o : src/lcd/4_bit/hd44780_4bit.cpp
-	g++ -O2 -c src/lcd/4_bit/hd44780_4bit.cpp -o hd44780.o
+final: $(TARGET)
 
-bmp_lcd.o : src/lcd/bmp_lcd.cpp
-	g++ -O2 -c src/lcd/bmp_lcd.cpp -o bmp_lcd.o
+$(TARGET): $(OBJ_C) $(OBJ_CPP)
+	$(CPP) $^ -o $@ $(LIBS)
 
-bmp_c.o : src/bmp/bmp_c/bmp.c
-	gcc -O2 -c src/bmp/bmp_c/bmp.c -o bmp_c.o
+%.o: %.c
+	$(CC) $(FLAGS) $< -o $@
 
-bmp.o : src/bmp/bmp.cpp src/bmp/bmp_c/bmp.c
-	g++ -O2 -c src/bmp/bmp.cpp -o bmp.o
-
-main.o : src/main.cpp
-	g++ -O2 -c src/main.cpp -o main.o
-
-cpp_can_logger : can.o logger.o timer.o bmp_lcd.o hd44780.o bmp.o bmp_c.o main.o
-	g++ -O2 can.o logger.o timer.o bmp_lcd.o hd44780.o bmp.o bmp_c.o main.o -o cpp_can_logger -li2c -lgpiod
+%.o: %.cpp
+	$(CPP) $(FLAGS) $< -o $@
 
 clean:
-	rm -f *.o
-
+	rm -f $(OBJ_C) $(OBJ_CPP)

@@ -1,3 +1,5 @@
+TARGET = cpp_can_logger
+
 CC = gcc
 CPP = g++
 FLAGS = -O2 -c
@@ -9,9 +11,9 @@ SRC_CPP = $(shell find . -name '*.cpp')
 OBJ_C = $(SRC_C:.c=.o)
 OBJ_CPP = $(SRC_CPP:.cpp=.o)
 
-final: cpp_can_logger
+final: $(TARGET)
 
-cpp_can_logger: $(OBJ_C) $(OBJ_CPP)
+$(TARGET): $(OBJ_C) $(OBJ_CPP)
 	$(CPP) $^ -o $@ $(LIBS)
 
 %.o: %.c

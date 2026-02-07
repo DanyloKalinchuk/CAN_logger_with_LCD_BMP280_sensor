@@ -53,6 +53,10 @@ void LCD_4BIT::delay_us(unsigned int us){
 	std::this_thread::sleep_for(std::chrono::microseconds(us));
 }
 
+/*
+Writes Data/Command to LCD as a byte
+is_str defines byte as Data if TRUE and Command if FALSE
+*/
 void LCD_4BIT::write_byte(unsigned int val, bool is_str){
 	this->set_rs_value(is_str);
 
@@ -61,6 +65,12 @@ void LCD_4BIT::write_byte(unsigned int val, bool is_str){
 	delay_us(160);
 }
 
+/*
+Variable(LCD Pin) | Description
+rs(R/S)           | Instruction/Register Select
+e(E)              | Enable. Starts data read/write
+dX(DX)            | Data/Command bits
+*/
 LCD_4BIT::LCD_4BIT(unsigned int rs, unsigned int e,  unsigned int d4,
 			unsigned int d5, unsigned int d6, unsigned int d7){
 

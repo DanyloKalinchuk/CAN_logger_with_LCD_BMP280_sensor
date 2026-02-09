@@ -31,10 +31,10 @@
    and `sudo ip link set can0 up`
 
 ### LCD Pins and Logger Output
-To change pins that will be used for LCD change values of the `LCD_PINS` macro in `src/shared_resources.hpp`.  
-To change the path of the *Logger* output change the value of the `LOGS_OUT_FILE` macro in `src/shared_resources.hpp`.
+- To change pins that will be used for LCD change values of the `LCD_PINS` macro in `src/shared_resources.hpp`.  
+- To change the path of the *Logger* output change the value of the `LOGS_OUT_FILE` macro in `src/shared_resources.hpp`.
 
-## Compilation commands
+## Compilation commands  
 To compile the application, use `make`.  
 To remove object files after compilation, use `make clean`.
 

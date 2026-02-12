@@ -187,7 +187,7 @@ void LCD_4BIT::turn_off(){
 }
 
 void LCD_4BIT::set_cursor(unsigned short line, unsigned short position){
-	if (line > 1 && position > 15){
+	if (line > 1 || position > 15){
 		throw std::runtime_error("Position out of borders");
 	}
 

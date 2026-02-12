@@ -40,7 +40,7 @@ class Can{
 	std::mutex read_mtx, send_mtx;
 
 	protected:
-	std::string log_message(bool recieved, struct can_frame *frame);
+	std::string log_message(bool received, struct can_frame *frame);
 
 	public:
 	Can();

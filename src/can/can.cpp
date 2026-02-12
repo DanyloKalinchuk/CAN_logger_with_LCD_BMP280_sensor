@@ -37,13 +37,13 @@ Can::Can(Logger* logger){
 	this->logs_on = true;
 }
 
-std::string Can::log_message(bool recieved, struct can_frame *frame){
+std::string Can::log_message(bool received, struct can_frame *frame){
 	std::string message = "";
 
-	if (recieved){
-		message += "RECIEVED";
+	if (received){
+		message += "RECEIVED";
 	}else{
-		message += "SENDED";
+		message += "SENT";
 	}
 
 	std::stringstream hex_num;
